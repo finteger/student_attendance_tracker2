@@ -26,4 +26,8 @@ const studentRecordSchema = mongoose.Schema({
         type: [attendanceSchema],
         default: [],
     }
-})
+});
+
+const StudentRecord = mongoose.model('StudentRecord', studentRecordSchema);
+
+module.exports = StudentRecord;
