@@ -16,12 +16,19 @@ exports.login = async (req, res) =>{
        }
        //Use bcrypt to verify the password
        const result = await bcrypt.compare(password, user.password);
+
+       if(!result){
+         res.send(404).send('Password does not match our records.');
+         return;
+       }
   
        //Generate the JWT
        const token = jwt.sign({ id: user._id.toString()}, secret, { expiresIn:'5m'});
 
-    } catch (error) {
-        
-    }
+       //Create a cookie and place the JWT inside of it
+       res.cookie('jwt', token, { maxAge: 5 * 60 * 1000, httpOnly: true});
 
+    } catch (error) {
+       return res.status(500).send('Internal Server Error');
+    }
 }
