@@ -10,12 +10,16 @@ const swaggerUI = require('swagger-ui-express');
 const authRoutes = require('./routes/authRoutes.js');
 const cookieParser = require('cookie-parser');
 
+
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
 app.use(express.static('public'));
-app.use(authRoutes);
 app.use(cookieParser());
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+app.use(authRoutes);
+
 
 //Swagger documentation
 const swaggerDocument = YAML.load('./swagger.yaml');

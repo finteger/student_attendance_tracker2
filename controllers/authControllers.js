@@ -32,3 +32,34 @@ exports.login = async (req, res) =>{
        return res.status(500).send('Internal Server Error');
     }
 }
+
+exports.register = async (req, res) =>{
+   const {email, password, confirmPassword} = req.body;
+
+   try {
+   
+   const existingUser = AttendanceManager.fineOne({email});
+
+   if(existingUser){
+     res.status(400).send('Email already exists.');
+   }
+
+   if(password !== confirmPassword){
+     res.status(400).send('Passwords do not match.');
+   }
+
+   const hashedPassword = await bcrypt.hash(password, 12);
+
+   const newUser = AttendanceManager({
+     email,
+     password: hashedPassword
+   });
+   
+   newUser.save();
+
+   res.redirect('/login');
+
+   } catch (error) {
+      return res.status(500).send('Internal Server Error');
+   }
+}
