@@ -38,7 +38,7 @@ exports.register = async (req, res) =>{
 
    try {
    
-   const existingUser = AttendanceManager.fineOne({email});
+   const existingUser = AttendanceManager.findOne({email});
 
    if(existingUser){
      res.status(400).send('Email already exists.');
