@@ -28,6 +28,8 @@ exports.login = async (req, res) =>{
        //Create a cookie and place the JWT inside of it
        res.cookie('jwt', token, { maxAge: 5 * 60 * 1000, httpOnly: true});
 
+       res.redirect('/attendance');
+
     } catch (error) {
        return res.status(500).send('Internal Server Error');
     }
@@ -36,9 +38,11 @@ exports.login = async (req, res) =>{
 exports.register = async (req, res) =>{
    const {email, password, confirmPassword} = req.body;
 
+   console.log(req.body);
+
    try {
    
-   const existingUser = AttendanceManager.findOne({email});
+   const existingUser =  await AttendanceManager.findOne({email});
 
    if(existingUser){
      res.status(400).send('Email already exists.');
