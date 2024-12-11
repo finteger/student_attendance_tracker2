@@ -70,7 +70,7 @@ exports.deleteStudent = async (req, res) => {
 }
 
 exports.updateStudent = async (req, res) =>{
-    const attendanceDate = req.body;
+    const {attendanceDate} = req.body;
     const length = req.body.attendance ? req.body.attendance.length : 0; 
 
     try {
@@ -94,10 +94,10 @@ exports.updateStudent = async (req, res) =>{
             $push: {attendance: {date: new Date(attendanceDate), status: 'absent'}}
         }
      )
-        res.redirect('/home');
+        res.redirect('/attendance');
 
     } catch (error) {
-        return res.status(500).send('Internal Server Error');
+        return res.status(500).send(`Internal Server Error: ${error}`);
     }
 }
 
